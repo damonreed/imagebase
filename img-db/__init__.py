@@ -16,7 +16,16 @@ Functions:  get     -   Get a row from the table identified by image_id
 """
 import uuid
 from google.cloud import bigquery
-from gcp.storage import add_blob
+from google.cloud import storage
+
+
+def add_blob(bucket, object_name, data):
+    """Uploads a file to the bucket."""
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket)
+    blob = bucket.blob(object_name)
+    blob.upload_from_string(data)
+    return blob.public_url
 
 
 # Set up BigQuery CLIENT
