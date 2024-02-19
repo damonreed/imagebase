@@ -10,8 +10,6 @@ SCHEMA = [
     bq.SchemaField("model", "STRING", mode="REQUIRED"),
 ]
 
-db_client = bq.Client()
-
 
 class DB:
     """
@@ -22,26 +20,26 @@ class DB:
         self.project = project
         self.dataset = dataset
         self.table = table
-        self.client = bq.Client()
-        self.path = f"[{self.project}.{self.dataset}.{self.table}]"
+        self.client = bq.Client(project=project)
+        self.path = f"{self.project}.{self.dataset}.{self.table}"
 
     def __create_table(self):
         # Check if the table exists, if not, create it
         try:
-            table = db_client.get_table(self.path)
-            print(f"Table {self.path.table_id} already exists.")
+            table = self.client.get_table(self.path)
+            print(f"Table {self.path} already exists.")
         except:
-            print(f"Table {self.path.table_id} does not exist. Creating it now...")
+            print(f"Table {self.path} does not exist. Creating it now...")
             table = bq.Table(self.path, schema=SCHEMA)
-            table = db_client.create_table(table)
-            print(f"Table {table.table_id} created successfully.")
+            table = self.client.create_table(table)
+            print(f"Table {table} created successfully.")
 
     def __delete_table(self):
         try:
-            db_client.delete_table(self.path)
-            print(f"Table {self.path.table_id} deleted successfully.")
+            self.client.delete_table(self.path)
+            print(f"Table {self.path} deleted successfully.")
         except:
-            print(f"Table {self.path.table_id} does not exist.")
+            print(f"Table {self.path} does not exist.")
 
     # Reset the table
     def __reset_table(self):
@@ -55,21 +53,21 @@ class DB:
     # Get a row from the table identified by image_id
     def get(self, image_id):
         query = f"""
-            SELECT * FROM `virtualnetengg.images`
+            SELECT * FROM `{self.path}`
             WHERE id = "{image_id}"
         """
-        query_job = db_client.query(query)  # Make an API request.
+        query_job = self.client.query(query)  # Make an API request.
         rows = query_job.result()  # Waits for query to finish
-        print(f"Query results loaded to table {self.path.table_id}.")
+        print(f"Query results loaded to table {self.path}.")
         print(rows)
         return rows
 
     # Get all rows from the table
-    def get_all():
+    def get_all(self):
         query = f"""
-            SELECT * FROM `virtualnetengg.images`
+            SELECT * FROM `{self.path}`
         """
-        query_job = db_client.query(query)  # Make an API request.
+        query_job = self.client.query(query)  # Make an API request.
         rows = query_job.result()  # Waits for query to finish
         return rows
 
@@ -79,8 +77,8 @@ class DB:
         rows_to_insert = [
             image.__dict__(),
         ]
-        table = db_client.get_table(self.path)
-        errors = db_client.insert_rows(table, rows_to_insert)  # Make an API request.
+        table = self.client.get_table(self.path)
+        errors = self.client.insert_rows(table, rows_to_insert)  # Make an API request.
         if errors == []:
             print("New rows have been added.")
         else:
@@ -93,7 +91,7 @@ class DB:
     # Update an existing row in the table identified by image_id with new data in an Image object
     def update(self, image_id, image):
         query = f"""
-            UPDATE `self.path`
+            UPDATE `{self.path}`
             SET url = "{image.url}",
                 title = "{image.title}",
                 descr = "{image.descr}",
@@ -103,7 +101,7 @@ class DB:
                 m_context = "{image.m_context}"
             WHERE id = "{image_id}"
         """
-        query_job = db_client.query(query)  # Make an API request.
+        query_job = self.client.query(query)  # Make an API request.
         rows = query_job.result()  # Waits for query to finish
         print(f"Query results loaded to table {self.path}.")
         print(rows)

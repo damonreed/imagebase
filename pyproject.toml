@@ -2,7 +2,7 @@
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 [project]
-name = "img_db"
+name = "imagebase"
 version = "0.0.1"
 authors = [
   { name="Damon Reed", email="dreed@nomadia.org" },
