@@ -9,10 +9,10 @@
 #   test:       Create a virtual environment, install the project, and run the tests.
 #
 # Variables:
-PROJECT_NAME := img-db
+PROJECT_NAME := imagebase
 VENV_NAME := venv
 PYTHON := python3
-PACKAGE_NAME := img-db
+PACKAGE_NAME := imagebase
 TEST_PATH := tests
 
 ## Makefile targets
