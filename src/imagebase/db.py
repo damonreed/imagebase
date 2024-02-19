@@ -113,11 +113,7 @@ class DB:
         if errors == []:
             print("New rows have been added.")
         else:
-            print(
-                "Encountered errors while inserting rows: {}".format(
-                    errors[0]["message"]
-                )
-            )
+            print("Encountered errors while inserting rows: {}".format(errors))
 
     # Update an existing row in the table identified by image_id with new data in an Image object
     def update(self, image_id, image):
