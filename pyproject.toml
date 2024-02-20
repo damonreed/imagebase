@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling","google-cloud-bigquery","google-cloud-storage"]
 build-backend = "hatchling.build"
 [project]
 name = "imagebase"
