@@ -15,17 +15,10 @@ classifiers = [
     "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
     "Operating System :: OS Independent",
 ]
-
-[tool.poetry]
-name = "your-package-name"
-description = "A image tracking database for AI images. Uses GCP for storage."
-version = "0.1.0"
-authors = ["Damon Reed"]
-license = "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication"
-[tool.poetry.dependencies]
-python = "^3.8"
-google-cloud-bigquery = '*'
-google-cloud-storage = '*'
+dependencies = [
+    "google-cloud-bigquery",
+    "google-cloud-storage",
+]
 
 [project.urls]
 Homepage = "https://github.com/damonreed/img-db"
